@@ -85,24 +85,32 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
     try {
-        const id = req.params.id
-        const data = await getUserById(id);
+        const id = Number(req.params.id);
 
-        if (data === null) {
-
+        if (id === NaN || Number.isInteger(id) === false) {
             res.status(400).json({
-                msg: "No User Exist By this ID",
-            })
-
+                "message": "Please enter the correct User id "
+            });
         } else {
 
-            res.status(200).json(
-                {
-                    msg: "User Found",
-                    data
-                }
-            );
+            const data = await getUserById(id);
 
+            if (data === null) {
+
+                res.status(400).json({
+                    msg: "No User Exist By this ID",
+                })
+
+            } else {
+
+                res.status(200).json(
+                    {
+                        msg: "User Found",
+                        data
+                    }
+                );
+
+            }
         }
     } catch (error) {
         console.log(error);

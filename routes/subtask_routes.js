@@ -46,6 +46,13 @@ router.post("/:id", tokenVerifier, async (req, res) => {
 router.delete("/:id", tokenVerifier, async (req, res) => {
     try {
         const decoded = jwt.verify(req.token, 'secretkey');
+        const subtask_id = Number(req.params.id);
+
+        if (subtask_id === NaN || Number.isInteger(subtask_id) === false) {
+            res.status(400).json({
+                "message": "Please enter the correct Subtask id "
+            });
+        }
 
         const deletedtask = await deleteSubtask({ subtask_id: req.params.id, user: decoded.user.user_id });
         if (deletedtask === null) {
@@ -80,7 +87,14 @@ router.delete("/:id", tokenVerifier, async (req, res) => {
 router.patch("/:id", tokenVerifier, async (req, res) => {
     try {
         const decoded = jwt.verify(req.token, 'secretkey');
+        const subtask_id = Number(req.params.id);
 
+        if (subtask_id === NaN || Number.isInteger(subtask_id) === false) {
+            res.status(400).json({
+                "message": "Please enter the correct Subtask id "
+            });
+        }
+        
         const updatedSubtask = await editSubtask({ subtask_id: req.params.id, user: decoded.user.user_id, ...req.body });
 
         if (updatedSubtask === null) {

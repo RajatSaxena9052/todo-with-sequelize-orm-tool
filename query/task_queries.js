@@ -9,13 +9,11 @@ async function addTask(inputData) {
                 where: {
                     [Op.or]: {
                         name: name,
-                        description: description,
-                        isCompleted: isCompleted,
-                        user_id: user_id
+                        description: description
                     }
                 }
             });
-
+        console.log(taskExist)
         if (taskExist === null) {
 
             if (isCompleted === undefined) {
@@ -23,7 +21,6 @@ async function addTask(inputData) {
                     {
                         name: name,
                         description: description,
-                        isCompleted: isCompleted,
                         user_id: user_id
                     });
 
